@@ -1,9 +1,9 @@
 let API_key = "695638d80acdfb03cba47e2d9be48680";
 
-let searchbtn = document.getElementById("searchbtn");
-searchbtn.addEventListener("click", getWeather);
+let searchbtn = document.getElementById("search-bar");
+searchbtn.addEventListener("submit", getWeather);
 
-searchbtn.addEventListener("click", getWeather5days);
+searchbtn.addEventListener("submit", getWeather5days);
 
 async function getWeather() {
   let city = document.getElementById("search-bar").value;
@@ -12,11 +12,12 @@ async function getWeather() {
     let res = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_key}&units=metric`
     );
-    console.log("res:", res);
+    // console.log("res:", res);
     let data = await res.json();
-    appendData(data);
 
-    console.log("data:", data);
+    showWeatherData(data);
+    // showWeatherData(data.list)
+    // console.log("data:", data);
   } catch (error) {
     console.log("error:", error);
   }
@@ -25,15 +26,16 @@ async function getWeather() {
 // fetch for 5 days
 async function getWeather5days() {
   let city = document.getElementById("search-bar").value;
-  console.log("days:", city);
+//   console.log("days:", city);
 
   try {
     let res = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_key}&units=metric`
     );
     let Fivedays = await res.json();
-    console.log("Fivedays:", Fivedays);
+    // console.log("Fivedays:", Fivedays);
     append5days(Fivedays);
+    
   } catch (error) {
     console.log("error:", error);
   }
@@ -52,7 +54,7 @@ const weekDays = [
 
 function CheckDay(day) {
   if (day + d.getDay() > 6) {
-    console.log("getDay:", d.getDay());
+    // console.log("getDay:", d.getDay());
 
     return day + d.getDay() - 7;
   } else {
@@ -65,26 +67,22 @@ function append5days(data) {
     const element = data.list[i];
 
     document.getElementById("day" + (i + 1) + "Min").innerHTML =
-      "Min:" + Number(element.main.temp_min) + " °C";
+      Number(element.main.temp_min) + " °C";
 
     document.getElementById("day" + (i + 1) + "Max").innerHTML =
-      "Max:" + Number(element.main.temp_max) + " °C";
+      Number(element.main.temp_max) + " °C";
 
     document.getElementById(
       "img" + (i + 1)
     ).src = `http://openweathermap.org/img/wn/${element.weather[0].icon}.png`;
 
-    document.getElementById("weatherdata").innerText = element.weather[0].main;
+    // document.getElementById("weatherdata").innerText = element.weather[0].main;
 
     document.getElementById("day" + (i + 1)).innerText = weekDays[CheckDay(i)];
+
+    
   }
 }
-
-// function search(){
-//      city=document.getElementById("search").value
-//     // console.log(city)
-//     DisplayData(city)
-// }
 
 document
   .getElementById("search-bar")
@@ -95,22 +93,22 @@ document
     }
   });
 
+
+
 function showWeatherData(data) {
-  let container = document.getElementById("maxmin");
+    console.log(data.weather[0].main);
+   let container = document.getElementById("tempAndstatus");
+//    container.innerHTML=null
+   let div=document.createElement("div");
 
-  container.innerHTML = null;
+   let temp = document.createElement("h1");
+   temp.innerText=`${data.main.temp}°C`
+   let tem = document.createElement("h1");
+   tem.innerText=data.weather[0].main
+//    temp.append(data.main.temp)
+// let cloud=document.createElement("img");
+// cloud.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+   div.append(temp,tem)
+   container.append(div);
 
-  data.forEach((el) => {
-    let card = document.createElement("div");
-
-    let tempMax = document.createElement("p");
-    tempMax.innerText = el.main.temp_max;
-    tempMax.style.marginRight = "8px";
-
-    let tempMin = document.createElement("p");
-    tempMin.innerText = el.main.temp_min;
-
-    container.append(card);
-    card.append(tempMax, tempMin);
-  });
 }
