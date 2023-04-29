@@ -96,19 +96,16 @@ document
 
 
 function showWeatherData(data) {
-    console.log(data.weather[0].main);
+     console.log(data);
    let container = document.getElementById("tempAndstatus");
 //    container.innerHTML=null
    let div=document.createElement("div");
-
    let temp = document.createElement("h1");
    temp.innerText=`${data.main.temp}°C`
    let tem = document.createElement("h1");
    tem.innerText=data.weather[0].main
-//    temp.append(data.main.temp)
-// let cloud=document.createElement("img");
-// cloud.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
-   div.append(temp,tem)
-   container.append(div);
 
+    div.append(temp,tem)
+    container.append(div);
+    
 }
