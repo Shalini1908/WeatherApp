@@ -1,41 +1,44 @@
 let API_key = "695638d80acdfb03cba47e2d9be48680";
 
 let searchbtn = document.getElementById("search-bar");
-searchbtn.addEventListener("submit", getWeather);
+searchbtn.addEventListener("oninput", getWeather);
 
-searchbtn.addEventListener("submit", getWeather5days);
+searchbtn.addEventListener("oninput", getWeather5days);
 
 async function getWeather() {
-  let city = document.getElementById("search-bar").value;
+  //   let city = document.getElementById("search-bar").value;
 
   try {
-    let res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_key}&units=metric`
-    );
-    // console.log("res:", res);
-    let data = await res.json();
+    let query = document.getElementById("search-bar").value;
 
-    showWeatherData(data);
-    // showWeatherData(data.list)
-    // console.log("data:", data);
-  } catch (error) {
-    console.log("error:", error);
+    try {
+      let res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${API_key}&units=metric`
+      );
+      let result = await res.json();
+   console.log("res",result);
+      getWeather5days();
+      showWeatherData(result);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
 // fetch for 5 days
 async function getWeather5days() {
   let city = document.getElementById("search-bar").value;
-//   console.log("days:", city);
+  //   console.log("days:", city);
 
   try {
     let res = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_key}&units=metric`
     );
     let Fivedays = await res.json();
-    // console.log("Fivedays:", Fivedays);
+     console.log("Fivedays:", Fivedays);
     append5days(Fivedays);
-    
   } catch (error) {
     console.log("error:", error);
   }
@@ -63,6 +66,20 @@ function CheckDay(day) {
 }
 
 function append5days(data) {
+    let main=document.getElementById("curve");
+
+    let d = document.createElement("div");
+    d.style.display="flex"
+    let sunset = document.createElement("h1");
+    sunset.innerText =`Sunset: ${data.city.sunset}`;
+
+    let sunrise = document.createElement("h1");
+    sunrise.innerText =`Sunrise: ${data.city.sunrise}`;
+
+    d.append(sunrise,sunset);
+    main.append(d);
+
+
   for (let i = 0; i < 7; i++) {
     const element = data.list[i];
 
@@ -76,36 +93,58 @@ function append5days(data) {
       "img" + (i + 1)
     ).src = `http://openweathermap.org/img/wn/${element.weather[0].icon}.png`;
 
-    // document.getElementById("weatherdata").innerText = element.weather[0].main;
+
 
     document.getElementById("day" + (i + 1)).innerText = weekDays[CheckDay(i)];
-
-    
   }
 }
 
-document
-  .getElementById("search-bar")
-  .addEventListener("keypress", function (event) {
-    if (event.key == "Enter") {
-      getWeather();
-      getWeather5days();
-    }
-  });
 
 
+let id;
+
+let debouncing = (func, time) => {
+  if (id) {
+    clearTimeout(id);
+  }
+
+  id = setTimeout(() => {
+    func();
+  }, time);
+};
 
 function showWeatherData(data) {
-     console.log(data);
-   let container = document.getElementById("tempAndstatus");
-//    container.innerHTML=null
-   let div=document.createElement("div");
-   let temp = document.createElement("h1");
-   temp.innerText=`${data.main.temp}°C`
-   let tem = document.createElement("h1");
-   tem.innerText=data.weather[0].main
+   
+  let container = document.getElementById("tempAndstatus");
+  let main=document.getElementById("curve");
+  //    container.innerHTML=null
+  let div = document.createElement("div");
+  let temp = document.createElement("h1");
+  temp.innerText = `${data.main.temp}°C`;
+  let tem = document.createElement("h1");
+  tem.innerText = data.weather[0].main;
 
-    div.append(temp,tem)
-    container.append(div);
-    
+  
+  div.append(temp, tem);
+  container.append(div);
+  
+    let d = document.createElement("div");
+    d.style.display="flex"
+    d.style.justifyContent="space-around"
+  
+    let pressure = document.createElement("h2");
+    pressure.innerText =`Pressure : ${data.main.pressure} hpa`;
+
+    let humidity = document.createElement("h2");
+    humidity.innerText =`Humidity: ${data.main.humidity} %`;
+
+    d.append(pressure,humidity);
+    main.append(d)
+
 }
+
+
+
+
+
+
