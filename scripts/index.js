@@ -1,43 +1,36 @@
 let API_key = "695638d80acdfb03cba47e2d9be48680";
 
-let searchbtn = document.getElementById("search-bar");
-searchbtn.addEventListener("oninput", getWeather);
+function ipLookUp() {
+  fetch("http://ip-api.com/json")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("User's Location Data is ", data);
+      getWeatherData(data.city);
+    })
+    .catch((error) => console.error("Request failed", error));
+}
 
-searchbtn.addEventListener("oninput", getWeather5days);
-
-async function getWeather() {
-  //   let city = document.getElementById("search-bar").value;
-
-  try {
-    let query = document.getElementById("search-bar").value;
-
-    try {
-      let res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${API_key}&units=metric`
-      );
-      let result = await res.json();
-   console.log("res",result);
-      getWeather5days();
-      showWeatherData(result);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  } catch (e) {
-    console.log(e);
+function getLocation() {
+  if ("geolocation" in navigator) {
+    // check if geolocation is supported/enabled on current browser
+    navigator.geolocation.getCurrentPosition(function success(position) {
+      // for when getting location is a success
+      ipLookUp();
+    });
+  } else {
+    console.log("geolocation is not enabled on this browser");
   }
 }
 
-// fetch for 5 days
-async function getWeather5days() {
-  let city = document.getElementById("search-bar").value;
-  //   console.log("days:", city);
+getLocation();
 
+async function getWeatherData(city) {
   try {
     let res = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_key}&units=metric`
     );
     let Fivedays = await res.json();
-     console.log("Fivedays:", Fivedays);
+    console.log("Fivedays:", Fivedays);
     append5days(Fivedays);
   } catch (error) {
     console.log("error:", error);
@@ -66,19 +59,26 @@ function CheckDay(day) {
 }
 
 function append5days(data) {
-    let main=document.getElementById("curve");
+  console.log("append data", data);
+  const sunriseTimestamp = data.city.sunset;
+  const sunsetTimestamp = data.city.sunrise;
 
-    let d = document.createElement("div");
-    d.style.display="flex"
-    let sunset = document.createElement("h1");
-    sunset.innerText =`Sunset: ${data.city.sunset}`;
+  const sunriseDate = new Date(sunriseTimestamp * 1000);
+  const sunsetDate = new Date(sunsetTimestamp * 1000);
 
-    let sunrise = document.createElement("h1");
-    sunrise.innerText =`Sunrise: ${data.city.sunrise}`;
+  const sunriseTime = sunriseDate.toLocaleTimeString();
+  const sunsetTime = sunsetDate.toLocaleTimeString();
 
-    d.append(sunrise,sunset);
-    main.append(d);
+  let sunset = document.getElementById("sunset");
+  sunset.innerText = sunriseTime;
 
+  let sunrise = document.getElementById("sunrise");
+  sunrise.innerText = sunsetTime;
+
+  let cityTemp = document.getElementById("city_temp");
+  cityTemp.innerText = data.city.name;
+
+  GetHumidity(data.list[0]);
 
   for (let i = 0; i < 7; i++) {
     const element = data.list[i];
@@ -93,58 +93,29 @@ function append5days(data) {
       "img" + (i + 1)
     ).src = `http://openweathermap.org/img/wn/${element.weather[0].icon}.png`;
 
-
-
     document.getElementById("day" + (i + 1)).innerText = weekDays[CheckDay(i)];
   }
 }
 
-
-
-let id;
-
-let debouncing = (func, time) => {
-  if (id) {
-    clearTimeout(id);
-  }
-
-  id = setTimeout(() => {
-    func();
-  }, time);
-};
-
-function showWeatherData(data) {
-   
-  let container = document.getElementById("tempAndstatus");
-  let main=document.getElementById("curve");
-  //    container.innerHTML=null
-  let div = document.createElement("div");
-  let temp = document.createElement("h1");
-  temp.innerText = `${data.main.temp}°C`;
-  let tem = document.createElement("h1");
-  tem.innerText = data.weather[0].main;
-
-  
-  div.append(temp, tem);
-  container.append(div);
-  
-    let d = document.createElement("div");
-    d.style.display="flex"
-    d.style.justifyContent="space-around"
-  
-    let pressure = document.createElement("h2");
-    pressure.innerText =`Pressure : ${data.main.pressure} hpa`;
-
-    let humidity = document.createElement("h2");
-    humidity.innerText =`Humidity: ${data.main.humidity} %`;
-
-    d.append(pressure,humidity);
-    main.append(d)
-
+function GetHumidity(data) {
+  let humidity = document.getElementById("humidity");
+  humidity.innerText = data.main.humidity + "%";
+  let pressure = document.getElementById("pressure");
+  pressure.innerText = data.main.pressure + " hPa";
+  let temp = document.getElementById("temp");
+  temp.innerText = data.main.temp + " C";
+  let weather_type = document.getElementById("weather_type");
+  weather_type.innerText = data.weather[0].main;
+  let weather_desc = document.getElementById("weather_desc");
+  weather_desc.innerText = data.weather[0].description;
 }
 
+let search = document.getElementById("search-bar");
+let searchBtn = document.getElementById("searchBtn");
+searchBtn.addEventListener("click", () => {
+  // console.log(search.value);
+  getWeatherData(search.value);
+});
 
-
-
-
+// ------------------------------------------------------------------------------------------
 
