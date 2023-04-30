@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
     <link rel="stylesheet" href="styles/index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
       src="https://kit.fontawesome.com/24c494a6b6.js"
       crossorigin="anonymous"
@@ -14,14 +15,13 @@
   <body>
     <div class="card">
       <div class="search">
-        <i class="fa-sharp fa-solid fa-location-dot"></i>
         <input
           type="text"
           id="search-bar"
           placeholder="Enter City Name"
           value=""
         />
-        <!-- oninput="debouncing(getWeather,1000)" -->
+
         <i class="fa-solid fa-magnifying-glass" id="searchBtn"></i>
       </div>
     </div>
@@ -120,17 +120,27 @@
       <div id="tempAndstatus">
         <div class="presenttemp">
           <p class="temp"><span id="temp"></span></p>
-          <img src="/images/sun.png" alt="" />
+          <img id="weather_img" src="" alt="" />
         </div>
-        <h1>Temperature in <span id="city_temp"></span></h1>
-        <h1>Sunrise: <span id="sunrise"></span></h1>
-        <h1>Sunset: <span id="sunset"></span></h1>
-        <h1>Humidity: <span id="humidity"></span></h1>
-        <h1>Pressure: <span id="pressure"></span></h1>
-        <h1><span id="weather_type"></span></h1>
-        <h1><span id="weather_desc"></span></h1>
 
-        <!-- <div id="curve"></div> -->
+        <h1>Temperature in <span id="city_temp"></span></h1>
+        <div id="weathertypeanddes">
+          <h1><span id="weather_type"></span></h1>
+          <h1><span id="weather_desc"></span></h1>
+        </div>
+
+        <div id="linechart">
+          <canvas id="myChart"></canvas>
+        </div>
+
+        <div id="pressureofcity">
+          <h1>Humidity: <span id="humidity"></span></h1>
+          <h1>Pressure: <span id="pressure"></span></h1>
+        </div>
+        <div id="sun">
+          <h1>Sunrise: <span id="sunrise"></span></h1>
+          <h1>Sunset: <span id="sunset"></span></h1>
+        </div>
       </div>
     </div>
 

@@ -2,12 +2,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   background: linear-gradient(to left, #52a1eb, #d1caee);
- 
+  width: 100%;
+  height: 100vh;
 }
 
 .search {
@@ -24,9 +25,8 @@ body {
   border-width: 1px;
   border-radius: 8px;
   text-align: center;
+  font-size: 18px;
 }
-
-
 
 #searchbtn {
   width: 100px;
@@ -43,20 +43,17 @@ body {
   gap: 20px;
 }
 
-.fa-sharp {
-  width: 19px;
-  height: 19px;
-  margin-top: 27px;
-  margin-right: 26%;
-  position: absolute;
-}
-
 .fa-magnifying-glass {
   width: 19px;
   height: 19px;
-  margin-top: 27px;
-  margin-left: 27%;
+  margin-top: 30px;
+  margin-left: 25%;
   position: absolute;
+}
+
+.weather {
+  font-weight: 600;
+  font-size: 18px;
 }
 
 #value {
@@ -64,101 +61,247 @@ body {
   margin-top: 10px;
 }
 
+#graph {
+  background-color: whitesmoke;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  width: 100%;
+  height: 100vh;
+}
+
 #tempAndstatus {
-  /* display: flex; */
-border-radius: 12px;
-background-color: white;
-box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
- width: 100%;
+  border-radius: 12px;
+
+  width: 100%;
   margin: auto;
-  margin-top: 30px;
-  height: 460px;
+  margin-top: 10px;
 }
 
 #tempAndstatus div {
-  /* display: flex; */
   justify-content: center;
   align-items: center;
-  
   margin: auto;
-  margin-top: 20px;
 }
-
-
 
 h1 {
   text-align: center;
   font-size: 20px;
   margin: auto;
-  margin-top: 10px;
 }
-
-/* .lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid rgb(2, 103, 197);
-  border-color: rgb(2, 103, 197) transparent rgb(2, 103, 197) transparent;
-  animation: lds-dual-ring 2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} */
 
 .presenttemp {
-    /* margin-top: 20px; */
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: auto;
-    gap: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: auto;
+
+  gap: 50px;
 }
 
-.temp{
- 
-    /* margin-top: 18px;
-    margin-left: 25%; */
-    font-size: 60px;
+.temp {
+  font-size: 60px;
 
-    font-weight: bold;
+  font-weight: bold;
 }
 
-.presenttemp img{
+.presenttemp img {
   width: 150px;
   height: 150px;
-
 }
 
-#curve div{
-    margin-top: 20px;
+#sun {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50px;
+}
+
+#pressureofcity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 50%;
+  height: 50px;
+}
+
+#weathertypeanddes {
+  display: flex;
+}
+
+#linechart {
+  width: 50%;
+  border: 1px solid #62a6eb;
+  margin-top: 14px;
 }
 
 /* ......................media-query .................................*/
 
-@media (max-width: 768px) {
+@media (min-width: 458px) and (max-width: 768px) {
   #iconsContainer {
     grid-template-columns: repeat(3, 1fr);
   }
 
   #search-bar {
-    width: 200px;
+    width: 250px;
     margin-top: 20px;
     height: 35px;
     border-width: 1px;
     border-radius: 8px;
     text-align: center;
+    font-size: 14px;
+  }
+
+  .fa-magnifying-glass {
+    width: 15px;
+    height: 15px;
+    margin-top: 30px;
+    margin-left: 40%;
+    position: absolute;
+  }
+
+  #graph {
+    background-color: whitesmoke;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    width: 100%;
+    height: 270vh;
+  }
+
+  #tempAndstatus {
+    border-radius: 12px;
+
+    width: 100%;
+    margin: auto;
+  }
+
+  #tempAndstatus div {
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+    margin-top: 20px;
+  }
+
+  .temp {
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 10px;
+  }
+
+  #linechart {
+    width: 50%;
+    border: 1px solid #62a6eb;
+    margin-top: 14px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 999px) {
+  #iconsContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #search-bar {
+    width: 290px;
+    margin-top: 20px;
+    height: 35px;
+    border-width: 1px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .fa-magnifying-glass {
+    width: 19px;
+    height: 19px;
+    margin-top: 30px;
+    margin-left: 26%;
+    position: absolute;
+  }
+
+  #graph {
+    background-color: whitesmoke;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    width: 100%;
+    height: 290vh;
+  }
+
+  #tempAndstatus {
+    border-radius: 12px;
+
+    width: 100%;
+    margin: auto;
+  }
+
+  #tempAndstatus div {
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+    margin-top: 20px;
+  }
+
+  #linechart {
+    width: 50%;
+    border: 1px solid #62a6eb;
+    margin-top: 14px;
+  }
+}
+
+@media (min-width: 990px) and (max-width: 1326px) {
+  #iconsContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #search-bar {
+    width: 330px;
+    margin-top: 20px;
+    height: 35px;
+    border-width: 1px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .fa-magnifying-glass {
+    width: 19px;
+    height: 19px;
+    margin-top: 30px;
+    margin-left: 22%;
+    position: absolute;
+  }
+
+  #graph {
+    background-color: whitesmoke;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    width: 100%;
+    height: 300vh;
+  }
+  #tempAndstatus {
+    border-radius: 12px;
+
+    width: 100%;
+    margin: auto;
+  }
+
+  #tempAndstatus div {
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+    margin-top: 20px;
+  }
+
+  #linechart {
+    width: 50%;
+    border: 1px solid #62a6eb;
+    margin-top: 14px;
   }
 }
